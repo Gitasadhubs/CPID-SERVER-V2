@@ -81,7 +81,7 @@
         .checkbox-options input[type="checkbox"] {
             margin-right: 10px;
         }
-        input[type="text"], select {
+        input[type="text"], select, input[type="email"] {
             width: 100%;
             padding: 8px;
             margin: 5px 0 15px;
@@ -248,6 +248,17 @@
             border-radius: 4px;
             font-size: 16px;
         }
+        .email-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+        .email-note {
+            font-size: 12px;
+            color: #666;
+            margin-top: -10px;
+            margin-bottom: 15px;
+        }
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -332,6 +343,13 @@
                 <p>Or send payment to:</p>
                 <div class="payment-address" id="paymentAddress">
                     binancepay:AGM TELECOM
+                </div>
+                
+                <!-- New Email Section -->
+                <div class="email-section">
+                    <label for="email">Email for Payment Confirmation:</label>
+                    <input type="email" id="email" placeholder="your@email.com" required>
+                    <p class="email-note">We'll send payment confirmation and service Order ID to this email</p>
                 </div>
                 
                 <div class="warning">
@@ -579,10 +597,21 @@
 
         // Form submission
         function submitForm() {
-            const requiredFields = ['deviceBrand', 'deviceModel', 'serial', 'imei1', 'orderId'];
+            const requiredFields = ['deviceBrand', 'deviceModel', 'serial', 'imei1', 'orderId', 'email'];
             let isValid = true;
             
+            // Email validation
+            const email = document.getElementById('email').value;
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('email').style.borderColor = 'red';
+                isValid = false;
+            } else {
+                document.getElementById('email').style.borderColor = '#ddd';
+            }
+            
+            // Other field validations
             requiredFields.forEach(fieldId => {
+                if (fieldId === 'email') return; // Skip email as we already checked it
                 const field = document.getElementById(fieldId);
                 if (!field.value.trim()) {
                     field.style.borderColor = 'red';
@@ -593,7 +622,7 @@
             });
             
             if (!isValid) {
-                alert('Please fill all required fields marked in red');
+                alert('Please fill all required fields correctly');
                 return;
             }
             
