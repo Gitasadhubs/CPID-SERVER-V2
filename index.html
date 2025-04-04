@@ -259,6 +259,27 @@
             margin-top: -10px;
             margin-bottom: 15px;
         }
+        .send-email-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 5px;
+            width: 100%;
+        }
+        .send-email-btn:hover {
+            background-color: #45a049;
+        }
+        .payment-error {
+            color: #dc3545;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 15px;
+            display: none;
+        }
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -324,7 +345,6 @@
 
                 <p>Scan this QR code to pay:</p>
                 
-                <!-- Your QR Code Images -->
                 <div class="qr-code-container">
                     <div id="binance-qr" class="qr-method active">
                         <img src="binance-qr.png" alt="Binance Pay QR Code" width="180">
@@ -345,11 +365,15 @@
                     binancepay:AGM TELECOM
                 </div>
                 
-                <!-- New Email Section -->
                 <div class="email-section">
                     <label for="email">Email for Payment Confirmation:</label>
                     <input type="email" id="email" placeholder="your@email.com" required>
-                    <p class="email-note">We'll send payment confirmation and service Order ID to this email</p>
+                    <button class="send-email-btn" onclick="sendConfirmationEmail()">Send Confirmation Email</button>
+                    <p class="email-note">We'll send payment confirmation and service updates to this email</p>
+                </div>
+                
+                <div class="payment-error" id="paymentError">
+                    Credit not found - Please scan QR code to complete payment
                 </div>
                 
                 <div class="warning">
@@ -364,7 +388,6 @@
             <div class="card" id="device-info">
                 <h2>Device Information</h2>
                 <form id="deviceForm">
-                    <!-- Device Selection System -->
                     <div class="device-selection">
                         <label for="deviceBrand">Brand:</label>
                         <select id="deviceBrand" onchange="updateModels()" required>
@@ -418,14 +441,14 @@
                 <div class="progress-bar" id="progressBar">0%</div>
             </div>
             <div class="service-steps">
-                <div class="service-step active" id="step1"> No Payment </div>
+                <div class="service-step active" id="step1">No Payment Detected</div>
                 <div class="service-step" id="step2">Connecting to device...</div>
                 <div class="service-step" id="step3">Bypassing security...</div>
                 <div class="service-step" id="step4">Reprogramming IMEI...</div>
                 <div class="service-step" id="step5">Finalizing changes...</div>
             </div>
             <div class="service-complete" id="serviceComplete">
-                Service Faild!
+                Service Failed!
             </div>
         </div>
         
@@ -552,7 +575,7 @@
             document.querySelector('.price').textContent = `Total: $${total}`;
         }
 
-        // Service Animation
+        // Service Animation with Payment Check
         function startServiceAnimation(duration) {
             const progressBar = document.getElementById('progressBar');
             const steps = document.querySelectorAll('.service-step');
@@ -560,6 +583,14 @@
             let currentStep = 0;
             let progress = 0;
             let startTime = Date.now();
+            
+            // Show payment error after 1 minute (60 seconds)
+            const paymentErrorTimeout = setTimeout(() => {
+                document.getElementById('paymentError').style.display = 'block';
+                document.getElementById('currentStepText').textContent = 'Payment not detected!';
+                document.querySelector('.loading-icon').style.borderTopColor = '#dc3545';
+                document.getElementById('step1').textContent = 'Payment Required!';
+            }, 60000); // 60 seconds = 60000ms
             
             const interval = setInterval(() => {
                 const elapsed = Date.now() - startTime;
@@ -583,6 +614,7 @@
                 
                 if (progress >= 100) {
                     clearInterval(interval);
+                    clearTimeout(paymentErrorTimeout);
                     completeService();
                 }
             }, 100);
@@ -590,9 +622,22 @@
 
         function completeService() {
             document.getElementById('serviceComplete').style.display = 'block';
-            document.getElementById('currentStepText').textContent = 'failed!';
+            document.getElementById('currentStepText').textContent = 'Service Failed!';
             document.querySelector('.loading-icon').style.display = 'none';
-            document.getElementById('progressBar').style.background = '#28a745';
+            document.getElementById('progressBar').style.background = '#dc3545';
+        }
+
+        // Send confirmation email
+        function sendConfirmationEmail() {
+            const email = document.getElementById('email').value;
+            
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                alert('Please enter a valid email address');
+                return;
+            }
+            
+            // Simulate sending email
+            alert(`Confirmation email sent to: ${email}\nCheck your inbox for payment instructions.`);
         }
 
         // Form submission
@@ -611,7 +656,7 @@
             
             // Other field validations
             requiredFields.forEach(fieldId => {
-                if (fieldId === 'email') return; // Skip email as we already checked it
+                if (fieldId === 'email') return;
                 const field = document.getElementById(fieldId);
                 if (!field.value.trim()) {
                     field.style.borderColor = 'red';
