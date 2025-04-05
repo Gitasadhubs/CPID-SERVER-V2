@@ -38,6 +38,28 @@
       "areaServed": {
         "@type": "Country",
         "name": "Global"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Repair Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "IMEI Repair",
+              "description": "Professional IMEI repair service"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Network Unlock",
+              "description": "Carrier network unlocking service"
+            }
+          }
+        ]
       }
     }
     </script>
@@ -328,69 +350,6 @@
             margin-bottom: 10px;
             line-height: 1.5;
         }
-        
-        /* New Email Confirmation Animation Styles */
-        .email-confirmation {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.2);
-            z-index: 1000;
-            text-align: center;
-            max-width: 400px;
-            animation: fadeIn 0.5s;
-        }
-        
-        .email-confirmation-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            position: relative;
-        }
-        
-        .email-confirmation-icon .circle {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 4px solid #4CAF50;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        
-        .email-confirmation-icon .checkmark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 40px;
-            color: #4CAF50;
-        }
-        
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 999;
-        }
-        
-        .email-sent {
-            position: fixed;
-            font-size: 24px;
-            color: #4CAF50;
-            animation: fly 1.5s forwards;
-            z-index: 1001;
-            pointer-events: none;
-        }
-        
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -403,15 +362,6 @@
             40% { transform: translateY(-20px); }
             60% { transform: translateY(-10px); }
         }
-        @keyframes pulse {
-            0% { transform: scale(0.95); opacity: 0.7; }
-            50% { transform: scale(1.05); opacity: 1; }
-            100% { transform: scale(0.95); opacity: 0.7; }
-        }
-        @keyframes fly {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-100px) rotate(10deg); opacity: 0; }
-        }
         @media (min-width: 992px) {
             .card-container {
                 display: grid;
@@ -421,10 +371,6 @@
         @media (max-width: 991px) {
             .card-container {
                 flex-direction: column;
-            }
-            .email-confirmation {
-                width: 90%;
-                max-width: none;
             }
         }
     </style>
@@ -445,11 +391,11 @@
             <!-- Services Card -->
             <div class="card" id="services">
                 <h2>Our Services</h2>
-                <p class="price">Base Service Price: $30</p>
+                <p class="price">Base Service Price: $15</p>
                 
                 <div class="checkbox-options">
                     <h3>Additional Services:</h3>
-                    <label><input type="checkbox"> IMEI Repair (+$15)</label>
+                    <label><input type="checkbox"> IMEI Repair (+$10)</label>
                     <label><input type="checkbox"> Screen Unlock (+$10)</label>
                     <label><input type="checkbox"> Serial Number Change (+$20)</label>
                     <label><input type="checkbox"> Network Unlock (+$25)</label>
@@ -626,18 +572,6 @@
         <p>荔城镇 Licheng Town | Contact: support@agmcop.com | WhatsApp: +1 (553) 857-4567</p>
     </footer>
 
-    <!-- Email Confirmation Elements -->
-    <div class="overlay" id="emailOverlay"></div>
-    <div class="email-confirmation" id="emailConfirmation">
-        <div class="email-confirmation-icon">
-            <div class="circle"></div>
-            <div class="checkmark">✓</div>
-        </div>
-        <h3>Email Sent Successfully!</h3>
-        <p id="confirmationEmailText"></p>
-        <button onclick="closeEmailConfirmation()" style="margin-top: 20px;">Close</button>
-    </div>
-
     <script>
         // Device Database
         const deviceDatabase = {
@@ -646,14 +580,13 @@
                 "Galaxy Z Fold 5", "Galaxy Z Flip 5", "Galaxy A54 5G",
                 "Galaxy A34 5G", "Galaxy A14 5G", "Galaxy Note 20 Ultra"
             ],
-           motorola: [
+            motorola: [
                 "Moto G Power (2024)", "Moto G Stylus (2024)", "Moto G 5G (2024)",
                 "Moto Edge+ (2023)", "Moto Edge 40", "Moto Edge 30 Ultra",
                 "Moto Razr+ (2023)", "Moto Razr (2023)", "Moto G82",
                 "Moto G72", "Moto G62", "Moto G52",
                 "Moto G32", "Moto G22", "Moto G200",
                 "Moto G100", "Moto Edge 20 Pro", "Moto Edge 20 Lite","Moto Edge(2022)", "Moto Edge 10 Lite uw","Moto Edge+ uw(2023)"
-            
             ],
             oneplus: [
                 "OnePlus 12", "OnePlus 11 5G", "OnePlus 11R",
@@ -826,52 +759,60 @@
             document.getElementById('progressBar').style.background = '#dc3545';
         }
 
-        // Enhanced Send confirmation email with animation
+        // Send confirmation email
         function sendConfirmationEmail() {
             const email = document.getElementById('email').value;
             
             if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                document.getElementById('email').style.borderColor = 'red';
+                alert('Please enter a valid email address');
                 return;
             }
             
-            document.getElementById('email').style.borderColor = '#ddd';
-            
-            // Show sending animation
-            const sendBtn = document.querySelector('.send-email-btn');
-            sendBtn.disabled = true;
-            sendBtn.innerHTML = 'Sending...';
-            
-            // Create flying email animation
-            const flyingEmail = document.createElement('div');
-            flyingEmail.className = 'email-sent';
-            flyingEmail.textContent = '✉️';
-            flyingEmail.style.left = (sendBtn.getBoundingClientRect().left + sendBtn.offsetWidth/2) + 'px';
-            flyingEmail.style.top = (sendBtn.getBoundingClientRect().top) + 'px';
-            document.body.appendChild(flyingEmail);
-            
-            // Simulate sending delay
-            setTimeout(() => {
-                // Show confirmation modal
-                document.getElementById('emailOverlay').style.display = 'block';
-                document.getElementById('emailConfirmation').style.display = 'block';
-                document.getElementById('confirmationEmailText').textContent = `A confirmation has been sent to ${email}`;
-                
-                // Reset send button
-                sendBtn.disabled = false;
-                sendBtn.innerHTML = 'Send Confirmation Email';
-                
-                // Remove flying email after animation
-                setTimeout(() => {
-                    flyingEmail.remove();
-                }, 1500);
-                
-            }, 1500);
+            // Simulate sending email
+            alert(`Confirmation email sent to: ${email}\nCheck your inbox for payment instructions.`);
         }
-        
-        function closeEmailConfirmation() {
-            document.getElementById('emailOverlay').style.display = 'none';
-            document.getElementById('emailConfirmation').style.display = 'none';
+
+        // Form submission
+        function submitForm() {
+            const requiredFields = ['deviceBrand', 'deviceModel', 'serial', 'imei1', 'orderId', 'email'];
+            let isValid = true;
+            
+            // Email validation
+            const email = document.getElementById('email').value;
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('email').style.borderColor = 'red';
+                isValid = false;
+            } else {
+                document.getElementById('email').style.borderColor = '#ddd';
+            }
+            
+            // Other field validations
+            requiredFields.forEach(fieldId => {
+                if (fieldId === 'email') return;
+                const field = document.getElementById(fieldId);
+                if (!field.value.trim()) {
+                    field.style.borderColor = 'red';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '#ddd';
+                }
+            });
+            
+            if (!isValid) {
+                alert('Please fill all required fields correctly');
+                return;
+            }
+            
+            // Hide form and show animation
+            document.getElementById('deviceForm').style.display = 'none';
+            document.getElementById('serviceAnimation').style.display = 'block';
+            
+            // Start service animation (3 minutes = 180,000ms)
+            startServiceAnimation(180000);
+            
+            // Reset form (but keep it hidden)
+            document.getElementById('deviceForm').reset();
+            updateTotal();
         }
 
         // Handle back/forward navigation
