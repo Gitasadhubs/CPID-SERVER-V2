@@ -47,9 +47,6 @@
             flex: 1;
             min-width: 300px;
         }
-        .card:nth-child(1) { order: 1; }
-        .card:nth-child(2) { order: 2; }
-        .card:nth-child(3) { order: 3; }
         h1, h2, h3 {
             color: #0073e6;
         }
@@ -280,6 +277,16 @@
             margin-top: 15px;
             display: none;
         }
+        .instructions-container {
+            padding: 10px;
+        }
+        .instructions-list {
+            padding-left: 20px;
+        }
+        .instructions-list li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -292,12 +299,15 @@
             40% { transform: translateY(-20px); }
             60% { transform: translateY(-10px); }
         }
-        @media (max-width: 768px) {
+        @media (min-width: 992px) {
+            .card-container {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 991px) {
             .card-container {
                 flex-direction: column;
-            }
-            .card {
-                order: initial !important;
             }
         }
     </style>
@@ -307,6 +317,7 @@
         <a href="#services">Services</a>
         <a href="#payment">Payment</a>
         <a href="#device-info">Device Info</a>
+        <a href="#repair-instructions">Instructions</a>
         <span style="color: white; font-weight: bold;">AGM COP</span>
     </div>
     
@@ -314,7 +325,7 @@
         <h1>- Repair & Unlock Service</h1>
         
         <div class="card-container">
-            <!-- Services Card (Left) -->
+            <!-- Services Card -->
             <div class="card" id="services">
                 <h2>Our Services</h2>
                 <p class="price">Base Service Price: $30</p>
@@ -329,7 +340,7 @@
                 </div>
             </div>
             
-            <!-- Payment Card (Middle) -->
+            <!-- Payment Card -->
             <div class="card" id="payment">
                 <h2>Payment Method</h2>
                 
@@ -360,7 +371,7 @@
                     </div>
                 </div>
                 
-                <p>:</p>
+                <p>Or send payment to:</p>
                 <div class="payment-address" id="paymentAddress">
                     binancepay:AGM TELECOM
                 </div>
@@ -384,7 +395,7 @@
                 </div>
             </div>
             
-            <!-- Device Info Card (Right) -->
+            <!-- Device Info Card -->
             <div class="card" id="device-info">
                 <h2>Device Information</h2>
                 <form id="deviceForm">
@@ -393,6 +404,7 @@
                         <select id="deviceBrand" onchange="updateModels()" required>
                             <option value="">-- Select Brand --</option>
                             <option value="samsung">Samsung</option>
+                            <option value="motorola">Motorola</option>
                             <option value="oneplus">OnePlus</option>
                             <option value="honor">Honor</option>
                             <option value="redmi">Redmi</option>
@@ -425,6 +437,37 @@
                     
                     <button type="button" onclick="submitForm()">Submit Device Information</button>
                 </form>
+            </div>
+            
+            <!-- Repair Instructions Card -->
+            <div class="card" id="repair-instructions">
+                <h2>Repair Instructions</h2>
+                <div class="instructions-container">
+                    <h3>Before Sending Your Device:</h3>
+                    <ol class="instructions-list">
+                        <li><strong>Backup Your Data</strong> - We are not responsible for data loss during repairs</li>
+                        <li><strong>Remove SIM/SD Cards</strong> - Remove all personal cards before service</li>
+                        <li><strong>Disable Find My Device</strong> - Turn off all device tracking features</li>
+                        <li><strong>Charge Your Device</strong> - Ensure at least 50% battery before service</li>
+                        <li><strong>Note Your Lock Screen</strong> - Write down your current lock screen code</li>
+                    </ol>
+                    
+                    <h3>After Receiving Service:</h3>
+                    <ol class="instructions-list">
+                        <li><strong>Factory Reset</strong> - Recommended after IMEI/network repairs</li>
+                        <li><strong>Test All Functions</strong> - Check calls, data, WiFi, Bluetooth, etc.</li>
+                        <li><strong>Update Software</strong> - Install latest OS updates if available</li>
+                        <li><strong>Re-enable Security</strong> - Set up new lock screen and security features</li>
+                        <li><strong>Monitor Performance</strong> - Report any issues within 7 days</li>
+                    </ol>
+                    
+                    <div class="warning" style="margin-top: 20px;">
+                        <h3>WARNING:</h3>
+                        <p>• Unauthorized modifications may violate local laws</p>
+                        <p>• Some features may not work after certain repairs</p>
+                        <p>• Warranty will be void after our service</p>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -471,8 +514,16 @@
         const deviceDatabase = {
             samsung: [
                "Galaxy S21","Galaxy S22","Galaxy S23","Galaxy S24", "Galaxy S24 Ultra", "Galaxy S23 Ultra", "Galaxy S22 Ultra",
-              "Galaxy Z Fold 3",  "Galaxy Z Fold 5", "Galaxy Z Flip 5", "Galaxy A54 5G",
+                "Galaxy Z Fold 5", "Galaxy Z Flip 5", "Galaxy A54 5G",
                 "Galaxy A34 5G", "Galaxy A14 5G", "Galaxy Note 20 Ultra"
+            ],
+            motorola: [
+                "Moto G Power (2024)", "Moto G Stylus (2024)", "Moto G 5G (2024)",
+                "Moto Edge+ (2023)", "Moto Edge 40", "Moto Edge 30 Ultra",
+                "Moto Razr+ (2023)", "Moto Razr (2023)", "Moto G82",
+                "Moto G72", "Moto G62", "Moto G52",
+                "Moto G32", "Moto G22", "Moto G200",
+                "Moto G100", "Moto Edge 20 Pro", "Moto Edge 20 Lite"
             ],
             oneplus: [
                 "OnePlus 12", "OnePlus 11 5G", "OnePlus 11R",
@@ -485,7 +536,7 @@
             ],
             redmi: [
                 "Redmi Note 12 Pro+", "Redmi 12 5G", "Redmi K60 Ultra",
-                "Redmi turbo 3", "Redmi 11T Pro", "Redmi Note 11 Pro", "Redmi 10"
+                "Redmi 11T Pro", "Redmi Note 11 Pro", "Redmi 10"
             ],
             xiaomi: [
                 "Xiaomi 13 Pro", "Xiaomi 12T Pro", "Xiaomi 11T",
@@ -495,14 +546,6 @@
                 "Oppo Find X6 Pro", "Oppo Reno 10 Pro+", "Oppo Find N2 Flip",
                 "Oppo A98 5G", "Oppo Reno 8 Pro", "Oppo Find X5 Pro"
             ],
-            motorola: [
-            "Moto G Power (2024)", "Moto G Stylus (2024)", "Moto G 5G (2024)",
-            "Moto Edge+ (2023)", "Moto Edge 40", "Moto Edge 30 Ultra",
-            "Moto Razr+ (2023)", "Moto Razr (2023)", "Moto G82",
-            "Moto G72", "Moto G62", "Moto G52",
-            "Moto G32", "Moto G22", "Moto G200",
-            "Moto G100", "Moto Edge plus uw (2022) ", "Moto Edge 20 Lite"
-                 ],
             vivo: [
                 "Vivo X90 Pro", "Vivo V29 Pro", "Vivo X80 Pro",
                 "Vivo V27", "Vivo Y56", "Vivo T1 Pro"
