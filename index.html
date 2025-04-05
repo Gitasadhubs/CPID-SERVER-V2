@@ -3,7 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGM CORP SERVERS - Repair & Unlock</title>
+    <title>AGM CORP - Professional Phone Repair & Unlocking Services</title>
+    <meta name="description" content="AGM CORP provides professional phone repair services including IMEI repair, network unlock, FRP bypass, and more. Fast 24-48 hour service.">
+    <meta name="keywords" content="phone repair, IMEI repair, network unlock, FRP bypass, phone unlocking, Samsung repair, Motorola unlock">
+    <meta name="author" content="AGM CORP">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="AGM CORP - Phone Repair & Unlocking Services">
+    <meta property="og:description" content="Professional phone repair services including IMEI repair, network unlock, and FRP bypass.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourdomain.com">
+    <meta property="og:image" content="https://yourdomain.com/images/og-image.jpg">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AGM CORP - Phone Repair & Unlocking Services">
+    <meta name="twitter:description" content="Professional phone repair services including IMEI repair, network unlock, and FRP bypass.">
+    <meta name="twitter:image" content="https://yourdomain.com/images/og-image.jpg">
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "AGM CORP Phone Repair",
+      "description": "Professional phone unlocking and repair services.",
+      "serviceType": "Phone repair",
+      "provider": {
+        "@type": "Organization",
+        "name": "AGM CORP",
+        "url": "https://yourdomain.com",
+        "logo": "https://yourdomain.com/logo.png"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Global"
+      }
+    }
+    </script>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -287,6 +328,69 @@
             margin-bottom: 10px;
             line-height: 1.5;
         }
+        
+        /* New Email Confirmation Animation Styles */
+        .email-confirmation {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+            text-align: center;
+            max-width: 400px;
+            animation: fadeIn 0.5s;
+        }
+        
+        .email-confirmation-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+        
+        .email-confirmation-icon .circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 4px solid #4CAF50;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .email-confirmation-icon .checkmark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            color: #4CAF50;
+        }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        
+        .email-sent {
+            position: fixed;
+            font-size: 24px;
+            color: #4CAF50;
+            animation: fly 1.5s forwards;
+            z-index: 1001;
+            pointer-events: none;
+        }
+        
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -299,6 +403,15 @@
             40% { transform: translateY(-20px); }
             60% { transform: translateY(-10px); }
         }
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.7; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.7; }
+        }
+        @keyframes fly {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100px) rotate(10deg); opacity: 0; }
+        }
         @media (min-width: 992px) {
             .card-container {
                 display: grid;
@@ -309,15 +422,19 @@
             .card-container {
                 flex-direction: column;
             }
+            .email-confirmation {
+                width: 90%;
+                max-width: none;
+            }
         }
     </style>
 </head>
 <body>
     <div class="navbar">
-        <a href="#services">Services</a>
-        <a href="#payment">Payment</a>
-        <a href="#device-info">Device Info</a>
-        <a href="#repair-instructions">Instructions</a>
+        <a href="#services" onclick="updateMetaTags('AGM CORP Services', 'Our phone repair services including IMEI repair, network unlock and more')">Services</a>
+        <a href="#payment" onclick="updateMetaTags('AGM CORP Payment', 'Payment methods for our phone repair services')">Payment</a>
+        <a href="#device-info" onclick="updateMetaTags('AGM CORP Device Info', 'Submit your device information for repair')">Device Info</a>
+        <a href="#repair-instructions" onclick="updateMetaTags('AGM CORP Repair Instructions', 'Important instructions before sending your device for repair')">Instructions</a>
         <span style="color: white; font-weight: bold;">AGM COP</span>
     </div>
     
@@ -358,16 +475,16 @@
                 
                 <div class="qr-code-container">
                     <div id="binance-qr" class="qr-method active">
-                        <img src="binance-qr.png" alt="Binance Pay QR Code" width="180">
+                        <img src="binance-qr.png" alt="Binance Pay QR Code for phone repair services" width="180">
                     </div>
                     <div id="usdt-qr" class="qr-method">
-                        <img src="NA" alt="USDT TRC20 QR Code" width="180">
+                        <img src="NA" alt="USDT TRC20 QR Code for phone repair payment" width="180">
                     </div>
                     <div id="btc-qr" class="qr-method">
-                        <img src="NA" alt="Bitcoin QR Code" width="180">
+                        <img src="NA" alt="Bitcoin QR Code for phone repair services" width="180">
                     </div>
                     <div id="eth-qr" class="qr-method">
-                        <img src="NA" alt="Ethereum QR Code" width="180">
+                        <img src="NA" alt="Ethereum QR Code for phone unlocking services" width="180">
                     </div>
                 </div>
                 
@@ -420,7 +537,7 @@
                         </select>
                     </div>
                     
-                    <label for="serial"> Model no:</label>
+                    <label for="serial">Model no:</label>
                     <input type="text" id="serial" placeholder="R28T91ABC3D4" required>
                     
                     <label for="imei1">IMEI 1:</label>
@@ -509,6 +626,18 @@
         <p>荔城镇 Licheng Town | Contact: support@agmcop.com | WhatsApp: +1 (553) 857-4567</p>
     </footer>
 
+    <!-- Email Confirmation Elements -->
+    <div class="overlay" id="emailOverlay"></div>
+    <div class="email-confirmation" id="emailConfirmation">
+        <div class="email-confirmation-icon">
+            <div class="circle"></div>
+            <div class="checkmark">✓</div>
+        </div>
+        <h3>Email Sent Successfully!</h3>
+        <p id="confirmationEmailText"></p>
+        <button onclick="closeEmailConfirmation()" style="margin-top: 20px;">Close</button>
+    </div>
+
     <script>
         // Device Database
         const deviceDatabase = {
@@ -555,6 +684,24 @@
                 "Realme 10 Pro+", "Realme 9 Pro+", "Realme C55"
             ]
         };
+
+        // Dynamic Meta Tag Updater
+        function updateMetaTags(title, description) {
+            document.title = title + " | AGM CORP";
+            document.querySelector('meta[name="description"]').setAttribute('content', description);
+            
+            // Update Open Graph tags
+            document.querySelector('meta[property="og:title"]').setAttribute('content', title);
+            document.querySelector('meta[property="og:description"]').setAttribute('content', description);
+            document.querySelector('meta[property="og:url"]').setAttribute('content', window.location.href);
+            
+            // Update Twitter tags
+            document.querySelector('meta[name="twitter:title"]').setAttribute('content', title);
+            document.querySelector('meta[name="twitter:description"]').setAttribute('content', description);
+            
+            // Push state to change URL without reload
+            history.pushState(null, null, window.location.pathname + window.location.hash);
+        }
 
         // Update Models Dropdown
         function updateModels() {
@@ -678,66 +825,76 @@
             document.getElementById('progressBar').style.background = '#dc3545';
         }
 
-        // Send confirmation email
+        // Enhanced Send confirmation email with animation
         function sendConfirmationEmail() {
             const email = document.getElementById('email').value;
             
             if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                alert('Please enter a valid email address');
-                return;
-            }
-            
-            // Simulate sending email
-            alert(`Confirmation email sent to: ${email}\nCheck your inbox for payment instructions.`);
-        }
-
-        // Form submission
-        function submitForm() {
-            const requiredFields = ['deviceBrand', 'deviceModel', 'serial', 'imei1', 'orderId', 'email'];
-            let isValid = true;
-            
-            // Email validation
-            const email = document.getElementById('email').value;
-            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
                 document.getElementById('email').style.borderColor = 'red';
-                isValid = false;
-            } else {
-                document.getElementById('email').style.borderColor = '#ddd';
-            }
-            
-            // Other field validations
-            requiredFields.forEach(fieldId => {
-                if (fieldId === 'email') return;
-                const field = document.getElementById(fieldId);
-                if (!field.value.trim()) {
-                    field.style.borderColor = 'red';
-                    isValid = false;
-                } else {
-                    field.style.borderColor = '#ddd';
-                }
-            });
-            
-            if (!isValid) {
-                alert('Please fill all required fields correctly');
                 return;
             }
             
-            // Hide form and show animation
-            document.getElementById('deviceForm').style.display = 'none';
-            document.getElementById('serviceAnimation').style.display = 'block';
+            document.getElementById('email').style.borderColor = '#ddd';
             
-            // Start service animation (3 minutes = 180,000ms)
-            startServiceAnimation(180000);
+            // Show sending animation
+            const sendBtn = document.querySelector('.send-email-btn');
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = 'Sending...';
             
-            // Reset form (but keep it hidden)
-            document.getElementById('deviceForm').reset();
-            updateTotal();
+            // Create flying email animation
+            const flyingEmail = document.createElement('div');
+            flyingEmail.className = 'email-sent';
+            flyingEmail.textContent = '✉️';
+            flyingEmail.style.left = (sendBtn.getBoundingClientRect().left + sendBtn.offsetWidth/2) + 'px';
+            flyingEmail.style.top = (sendBtn.getBoundingClientRect().top) + 'px';
+            document.body.appendChild(flyingEmail);
+            
+            // Simulate sending delay
+            setTimeout(() => {
+                // Show confirmation modal
+                document.getElementById('emailOverlay').style.display = 'block';
+                document.getElementById('emailConfirmation').style.display = 'block';
+                document.getElementById('confirmationEmailText').textContent = `A confirmation has been sent to ${email}`;
+                
+                // Reset send button
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = 'Send Confirmation Email';
+                
+                // Remove flying email after animation
+                setTimeout(() => {
+                    flyingEmail.remove();
+                }, 1500);
+                
+            }, 1500);
+        }
+        
+        function closeEmailConfirmation() {
+            document.getElementById('emailOverlay').style.display = 'none';
+            document.getElementById('emailConfirmation').style.display = 'none';
         }
 
-        // Initialize default payment method
+        // Handle back/forward navigation
+        window.addEventListener('popstate', function() {
+            const hash = window.location.hash;
+            if (hash === '#services') {
+                updateMetaTags('AGM CORP Services', 'Our phone repair services including IMEI repair, network unlock and more');
+            } else if (hash === '#payment') {
+                updateMetaTags('AGM CORP Payment', 'Payment methods for our phone repair services');
+            } else if (hash === '#device-info') {
+                updateMetaTags('AGM CORP Device Info', 'Submit your device information for repair');
+            } else if (hash === '#repair-instructions') {
+                updateMetaTags('AGM CORP Repair Instructions', 'Important instructions before sending your device for repair');
+            }
+        });
+
+        // Initialize default payment method and meta tags
         window.onload = function() {
             changePaymentMethod(); // Show Binance by default
             updateTotal();
+            updateMetaTags(
+                "AGM CORP - Phone Repair & Unlocking Services", 
+                "Professional phone repair services including IMEI repair, network unlock, and FRP bypass."
+            );
         };
     </script>
 </body>
